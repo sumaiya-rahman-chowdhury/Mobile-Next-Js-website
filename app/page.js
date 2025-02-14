@@ -5,9 +5,9 @@ import Pagination from "./component/Pagination";
 const Home = async ({ searchParams }) => {
   const page = parseInt(searchParams.page) || 1; // Default to page 1 if not specified
   const limit = parseInt(searchParams.limit) || 5; // Default to 5 items per page
-
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const res = await fetch(
-    `http://localhost:3000/api/mobiles?page=${page}&limit=${limit}`,
+    `${API_BASE_URL}?page=${page}&limit=${limit}`,
     {
       next: { tags: ["products"] },
     }
