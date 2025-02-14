@@ -6,11 +6,15 @@ function ProductDetails() {
   const [productDetails, setProductDetails] = useState(null);
   const { id } = useParams();
   console.log(id);
+  // const api = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  // console.log("This is from Details page : ",api)
   useEffect(() => {
     // Ensure that `id` is available before making the API request
     if (id) {
       const fetchProductDetails = async () => {
-        const res = await fetch(`http://localhost:3000/api/mobiles/${id}`);
+        const res = await fetch(`https://simple-nextjs-web-eosin.vercel.app/api/mobiles/${id}`);
+        // console.log(`This is from Details page 2 ${api}/api/mobiles/${id}`)
         const result = await res.json();
         setProductDetails(result); // Update the state with the fetched product details
       };
