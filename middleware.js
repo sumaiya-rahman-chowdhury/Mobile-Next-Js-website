@@ -4,6 +4,7 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/checkout",
+    "/add-products",
     "/api/user/:path*",
     "/api/admin:path*",
   ],
@@ -16,6 +17,12 @@ export default withAuth(
     const role = req?.nextauth?.token?.user?.role;
     if (
       url?.includes("/admin") &&
+      (role !== "admin" || role !== "super-admin")
+    ) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+     else if(
+      url?.includes("/add-products") &&
       (role !== "admin" || role !== "super-admin")
     ) {
       return NextResponse.redirect(new URL("/", req.url));

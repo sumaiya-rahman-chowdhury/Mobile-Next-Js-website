@@ -11,12 +11,8 @@ export async function GET(req, { params }) {
   const product = await Mobile.findById(id);
   console.log(product);
   //
-   // Set CORS headers
-   const headers = new Headers();
-   headers.set("Access-Control-Allow-Origin", "*"); // Allow all origins
-   headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-   headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  return NextResponse.json(product,{ status: 200, headers });
+  
+  return NextResponse.json(product,{status:200});
 }
 
 export async function DELETE(req, { params }) {
@@ -45,15 +41,4 @@ export async function PATCH(req, { params }) {
     image: body.image,
   });
   return NextResponse.json(product);
-}
-
-export async function OPTIONS() {
-  return new Response(null, {
-    status: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    },
-  });
 }

@@ -3,6 +3,8 @@ import connectDb from "./db";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcrypt";
+import { getServerSession } from "next-auth";
+
 
 export const authOptions = {
   session: {
@@ -45,8 +47,7 @@ export const authOptions = {
   callbacks: {
     // 
     async signIn({ user, account }) {
-      console.log("SignIn called:", user, account);
-
+      // console.log("SignIn called:", user, account);
       await connectDb();
 
       let existingUser = await User.findOne({ email: user.email });
@@ -120,7 +121,14 @@ export const authOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
+
   pages: {
     signIn: "/login",
   },
+};
+
+export const getUserFromRequest = async (req) => {
+  const session = await getServerSession(authOptions);
+
+  return session?.user ? session.user.id : null;
 };

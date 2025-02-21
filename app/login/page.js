@@ -10,7 +10,6 @@ export default function Login() {
   const [error, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

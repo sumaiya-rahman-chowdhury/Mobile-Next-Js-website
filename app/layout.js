@@ -2,6 +2,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import NavBar from "./component/Navbar";
 import SessionProviderWrapper from "./component/SessionProvider";
+import { CartProvider } from "./context/CartContext";
 // import { ToastBar } from "react-hot-toast";
 
 const poppins = Poppins({
@@ -9,9 +10,6 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "700"], // Adjust weights as needed
 });
-
-
-
 
 export const metadata = {
   title: "Mobile App",
@@ -23,9 +21,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={poppins.variable}>
         <SessionProviderWrapper>
-          <NavBar/>
-          {/* <ToastBar/> */}
-          {children}
+          <CartProvider>
+            <NavBar />
+            {/* <ToastBar/> */}
+            {children}
+          </CartProvider>
         </SessionProviderWrapper>
       </body>
     </html>

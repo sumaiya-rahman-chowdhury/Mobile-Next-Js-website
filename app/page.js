@@ -10,8 +10,12 @@ const Home = async ({ searchParams }) => {
   const res = await fetch(`${API_BASE_URL}api/mobiles?page=${page}&limit=${limit}`, {
     next: { tags: ["products"] },
   });
-  console.log("redponse from product api call", res);
+  console.log("res.status from product api call", res.status);
+  if (!res.ok) {
+    throw new Error(`HTTP error! Status: ${res.status}`);
+  }
   const products = await res.json();
+  // console.log(products)
   const { mobiles, currentPage, totalPages } = products;
 
   return (
