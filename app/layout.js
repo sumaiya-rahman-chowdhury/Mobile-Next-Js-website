@@ -3,6 +3,7 @@ import "./globals.css";
 import NavBar from "./component/Navbar";
 import SessionProviderWrapper from "./component/SessionProvider";
 import { CartProvider } from "./context/CartContext";
+import Footer from "./component/Footer";
 // import { ToastBar } from "react-hot-toast";
 
 const poppins = Poppins({
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
             <NavBar />
             {/* <ToastBar/> */}
             {children}
+            <Footer/>
           </CartProvider>
         </SessionProviderWrapper>
       </body>

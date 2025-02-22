@@ -1,5 +1,6 @@
 "use client";
 
+import Modal from "../component/Modal";
 import { useCart } from "../context/CartContext";
 
 const CartPage = () => {
@@ -82,6 +83,12 @@ const CartPage = () => {
           </div>
         </div>
       )}
+      {/* <Modal 
+      isOpen={moadalOpen}
+      onClose={setModalOpen(false)}
+      onConfirm={confirmRemove}
+      message="Are you sure you want to remove this item from your cart?"
+      /> */}
     </div>
   );
 };

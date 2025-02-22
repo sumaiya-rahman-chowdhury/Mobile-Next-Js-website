@@ -1,18 +1,15 @@
 import Cart from "@/models/Cart";
 import User from "@/models/User";
-import { authOptions } from "@/utils/auth";
+// import { authOptions } from "@/utils/auth";
+import { authenticatedUser } from "@/utils/authHelpers";
 import connectDb from "@/utils/db";
-import { getServerSession } from "next-auth";
+// import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
   await connectDb();
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
-  }
-
+  const { session, errorResponse } = await authenticatedUser();
+  if (errorResponse) return errorResponse;
   const cart = await Cart.findOne({ userId: session.user.id });
   const userDetails = await User.findById(session.user.id);
   return NextResponse.json({ cart: cart?.items || [], userDetails });
@@ -20,12 +17,8 @@ export async function GET(req) {
 
 export async function POST(req) {
   await connectDb();
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
-  }
-
+  const { session, errorResponse } = await authenticatedUser();
+  if (errorResponse) return errorResponse;
   const { productId, name, price } = await req.json();
   console.log("Received Product Data:", { productId, name, price });
 
@@ -44,12 +37,10 @@ export async function POST(req) {
   }
   console.log("Current Cart Data:", cart);
 
-  // ✅ Ensure `items` exists before accessing `.find()`
   if (!cart.items) {
     cart.items = [];
   }
 
-  // ✅ Check if product is already in the cart
   const existingItem = cart.items.find(
     (item) => String(item.productId) === String(productId)
   );
@@ -66,17 +57,10 @@ export async function POST(req) {
 
 export async function DELETE(req) {
   try {
-    const { productId } = await req.json(); // Extract product ID
+    const { productId } = await req.json(); 
     console.log("From delete route", { productId });
-
-    const session = await getServerSession(authOptions);
-
-    if (!session) {
-      return NextResponse.json(
-        { message: "Not authenticated" },
-        { status: 401 }
-      );
-    }
+    const { session, errorResponse } = await authenticatedUser();
+    if (errorResponse) return errorResponse;
     const userId = session.user.id;
     const updatedCart = await Cart.findOneAndUpdate(
       { userId },
@@ -92,8 +76,6 @@ export async function DELETE(req) {
       { cart: updatedCart?.items || [] },
       { status: 200 }
     );
-
-    
   } catch (error) {
     console.error("Error removing item from cart:", error);
     return NextResponse.json(

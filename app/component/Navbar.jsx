@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { FaCartArrowDown } from "react-icons/fa";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -69,6 +70,15 @@ export default function NavBar() {
           </li>
           <li>
             <Link
+              href="/cart"
+              className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition duration-200"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Cart <FaCartArrowDown />
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/services"
               className="block text-gray-600 hover:text-blue-600 transition duration-200"
               onClick={() => setIsMenuOpen(false)}
@@ -104,6 +114,19 @@ export default function NavBar() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Add Products
+                </Link>
+              </li>
+            )}
+              {status === "authenticated" &&
+            (data?.user?.role === "admin" ||
+              data?.user?.role === "super-admin") && (
+              <li>
+                <Link
+                  href="/add-products"
+                  className="block text-gray-600 hover:text-blue-600 transition duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                 Orders
                 </Link>
               </li>
             )}
